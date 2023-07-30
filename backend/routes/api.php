@@ -41,7 +41,7 @@ Route::group([
     Route::post('/liked/{postId}', [LikeController::class, 'liked']);
     Route::get('/isLikedOrNot/{postId}', [LikeController::class, 'isLikedOrNot']);
     Route::post('/saveRecipe/{postId}', [SavedrecipesController::class, 'saveRecipe']);
-
+    Route::get('/isSavedOrNot/{postId}', [SavedrecipesController::class, 'isSavedOrNot']);
 });
 
 Route::get('/getAllCategories', [CategoryController::class, 'getAllCategories']);

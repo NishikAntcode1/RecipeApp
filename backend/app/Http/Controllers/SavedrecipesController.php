@@ -46,4 +46,30 @@ class SavedrecipesController extends Controller
             return response()->json(['message' => 'Failed to authenticate token'], 500);
         }
     }
+
+    public function isSavedOrNot($postId){
+        try{
+            if (!$user = JWTAuth::parseToken()->authenticate()) {
+                return response()->json(['message' => 'User not found'], 404);
+            }
+
+            $savedRecipes = Savedrecipe::where('user_id', $user->id)->first();
+
+            if($savedRecipes){
+                $savedData = json_decode($savedRecipes->saved_recipes_data, true);
+                if(in_array($postId, $savedData)){
+                    return response()->json(['isSaved' => true]);
+                }
+                else{
+                    return response()->json(['isSaved' => false]);
+                }
+            }
+            else{
+                return response()->json(['isSaved' => false]);
+            }
+
+        }catch (JWTException $e) {
+            return response()->json(['message' => 'Failed to authenticate token'], 500);
+        }
+    }
 }

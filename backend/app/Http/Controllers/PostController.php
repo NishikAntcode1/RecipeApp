@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Recipe;
 use Illuminate\Http\Request;
-use Validator;
-use JWTAuth;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 
 
@@ -88,7 +88,8 @@ class PostController extends Controller
             if (!$recipe) {
                 return response()->json(['message' => 'Recipe not found'], 404);
             }
-            return $recipe;
+            $user = $recipe->user;
+            return response()->json(['recipe' => $recipe, 'user' => $user], 200);;
         }
         catch (JWTException $e) {
             return response()->json(['message' => 'Failed to authenticate token'], 500);
